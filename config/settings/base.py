@@ -34,7 +34,7 @@ THIRD_PARTY_APPS = [
     "djoser",
     "claudinary",
     "django_filters",
-    "django_celery_email",
+    "djcelery_email",
     "django_celery_beat",
 ]
 
