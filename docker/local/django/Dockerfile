@@ -11,12 +11,12 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 
 COPY ./requirements .
 
-RUN pip wheel --wheel-dir /user/src/app/wheels \
+RUN pip wheel --wheel-dir /usr/src/app/wheels \
     -r ${BUILD_ENVIRONMENT}.txt
 
 # Stage 2: Run Stage
 FROM python AS python-run-stage
-ARG BUILD_ENVIRONMENT = local
+ARG BUILD_ENVIRONMENT=local
 
 ARG APP_HOME=/app
 ENV PYTHONDONTWRITEBYTECODE=1 \
