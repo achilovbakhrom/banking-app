@@ -53,12 +53,14 @@ services:
       dockerfile: Dockerfile
     restart: always
     ports:
-      - "8080:80"    
+      - "8080:80"
     volumes:
       - ./staticfiles:/app/staticfiles
       - logs_store:/var/log/nginx
     depends_on:
-      - api
+      api:
+        condition: service_started
+        restart: true
     networks:
       - banker_local_nw
 
