@@ -2,7 +2,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from os import getenv, path
 from loguru import logger
-from datetime import timedelta
+from datetime import timedelta, date
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
@@ -141,6 +141,11 @@ STATIC_ROOT = str(BASE_DIR / "staticfiles")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "user_auth.User"
+DEFAULT_BIRTHDATE = date(1990, 1, 1)
+DEFAULT_DATE = date(2000, 1, 1)
+DEFAULT_EXPIRY_DATE = date(2027, 1, 1)
+DEFAULT_COUNTRY = "UZ"
+DEFAULT_PHONE_NUMBER = "+998901234567"
 
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
