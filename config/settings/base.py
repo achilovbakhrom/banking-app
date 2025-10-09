@@ -149,15 +149,48 @@ DEFAULT_PHONE_NUMBER = "+998901234567"
 
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-    # "DEFAULT_AUTHENTICATION_CLASSES": (
-    #     "rest_framework.authentication.SessionAuthentication",
-    #     "rest_framework.authentication.TokenAuthentication",
-    #     "rest_framework.authentication.BasicAuthentication",
-    # ),
-    # "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
-    # "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
-    # "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    # "PAGE_SIZE": 10,
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "core_apps.common.cookie_auth.CookieAuthentication",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+    "PAGE_SIZE": 10,
+    "THROTTLE_CLASSES": [
+        "rest_framework.throttling.AnonRateThrottle",
+        "rest_framework.throttling.UserRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "100/day",
+        "user": "1000/day",
+    },
+}
+
+SIMPLE_JWT = {
+    "SIGNING_KEY": getenv("SIGNING_KEY"),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": True,
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
+}
+
+DJOSER = {
+    "USER_ID_FIELD": "id",
+    "LOGIN_FIELD": "email",
+    "TOKEN_MODEL": None,
+    "USER_CREATE_PASSWORD_RETYPE": True,
+    "SEND_ACTIVATION_EMAIL": True,
+    "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
+    "PASSWORD_CONFIRM_RETYPE": True,
+    "ACTIVATION_URL": "activate/{uid}/{token}",
+    "PASSWORD_RESET_CONFIRM_URL": "password-reset/{uid}/{token}",
+    "SERIALIZERS": {
+        "user_create": "core_apps.user_auth.serializers.UserCreateSerializer",
+        # "user": "core_apps.user_auth.serializers.UserSerializer",
+        # "current_user": "core_apps.user_auth.serializers.UserSerializer",
+        # "user_delete": "djoser.serializers.UserDeleteSerializer",
+    },
 }
 
 SPECTACULAR_SETTINGS = {
@@ -192,6 +225,12 @@ CELERY_TASK_TIME_LIMIT = 5 * 60
 CELERY_TASK_SOFT_TIME_LIMIT = 60
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 CELERY_WORKER_SEND_TASK_EVENTS = True
+
+COOKIE_NAME = "access"
+COOKIE_SAME_SITE = "Lax"
+COOKIE_PATH = "/"
+COOKIE_HTTP_ONLY = True
+COOKIE_SECURE = getenv("COOKIE_SECURE", "True") == "True"
 
 LOGGING_CONFIG = None
 
